@@ -51,7 +51,7 @@ function App() {
     const matchesQuery = `${project.name} ${project.type} ${project.owner}`.toLowerCase().includes(query.toLowerCase())
     const matchesFilter = filter === 'All projects' || project.status === filter
     return matchesQuery && matchesFilter
-  }), [query, filter])
+  }), [projectList, query, filter])
 
   const notify = (message) => {
     setToast(message)
