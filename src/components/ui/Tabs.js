@@ -1,4 +1,4 @@
 export function Tabs(props = {}) {
-  return { component: 'Tabs', props }
+  return <div {...props} />
 }
 

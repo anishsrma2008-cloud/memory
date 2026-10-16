@@ -1,4 +1,4 @@
 export function IconButton(props = {}) {
-  return { component: 'IconButton', props }
+  return <div {...props} />
 }
 

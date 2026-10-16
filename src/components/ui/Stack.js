@@ -1,4 +1,4 @@
 export function Stack(props = {}) {
-  return { component: 'Stack', props }
+  return <div {...props} />
 }
 

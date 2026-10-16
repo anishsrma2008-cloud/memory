@@ -1,4 +1,4 @@
 export function Sidebar(props = {}) {
-  return { component: 'Sidebar', props }
+  return <div {...props} />
 }
 

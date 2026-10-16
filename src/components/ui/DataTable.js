@@ -1,4 +1,4 @@
 export function DataTable(props = {}) {
-  return { component: 'DataTable', props }
+  return <div {...props} />
 }
 

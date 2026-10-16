@@ -1,4 +1,4 @@
 export function CalendarPage() {
-  return { page: 'CalendarPage', status: 'ready' }
+  return <div />
 }
 

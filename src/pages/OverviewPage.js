@@ -1,4 +1,4 @@
 export function OverviewPage() {
-  return { page: 'OverviewPage', status: 'ready' }
+  return <div />
 }
 

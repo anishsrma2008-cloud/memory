@@ -1,4 +1,4 @@
 export function StatCard(props = {}) {
-  return { component: 'StatCard', props }
+  return <div {...props} />
 }
 

@@ -1,4 +1,4 @@
 export function Dropdown(props = {}) {
-  return { component: 'Dropdown', props }
+  return <div {...props} />
 }
 

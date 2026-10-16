@@ -1,4 +1,4 @@
 export function Divider(props = {}) {
-  return { component: 'Divider', props }
+  return <div {...props} />
 }
 

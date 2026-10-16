@@ -1,4 +1,4 @@
 export function Modal(props = {}) {
-  return { component: 'Modal', props }
+  return <div {...props} />
 }
 

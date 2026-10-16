@@ -1,4 +1,4 @@
 export function Toast(props = {}) {
-  return { component: 'Toast', props }
+  return <div {...props} />
 }
 

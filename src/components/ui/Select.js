@@ -1,4 +1,4 @@
 export function Select(props = {}) {
-  return { component: 'Select', props }
+  return <div {...props} />
 }
 
