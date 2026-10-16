@@ -14,7 +14,7 @@ const navItems = [
   { label: 'Calendar', icon: CalendarDays },
 ]
 
-const projects = [
+const initialProjects = [
   { name: 'Atlas mobile app', type: 'Product design', owner: 'Maya Chen', initials: 'MC', color: 'violet', progress: 78, status: 'On track', due: 'Oct 28', tasks: '24 / 31', members: ['MC', 'JD', 'AK'] },
   { name: 'Q4 growth campaign', type: 'Marketing', owner: 'James Davis', initials: 'JD', color: 'orange', progress: 52, status: 'At risk', due: 'Nov 04', tasks: '18 / 35', members: ['JD', 'SR', 'MC'] },
   { name: 'Design system 2.0', type: 'Engineering', owner: 'Ari Kim', initials: 'AK', color: 'blue', progress: 91, status: 'On track', due: 'Oct 21', tasks: '42 / 46', members: ['AK', 'MC', 'PL'] },
@@ -40,20 +40,45 @@ function ProgressBar({ value }) {
 
 function App() {
   const [active, setActive] = useState('Overview')
+  const [projectList, setProjectList] = useState(initialProjects)
   const [query, setQuery] = useState('')
   const [showModal, setShowModal] = useState(false)
   const [toast, setToast] = useState('')
   const [filter, setFilter] = useState('All projects')
+  const [newProject, setNewProject] = useState({ name: '', description: '', team: 'Product team', due: '' })
 
-  const visibleProjects = useMemo(() => projects.filter((project) => {
+  const visibleProjects = useMemo(() => projectList.filter((project) => {
     const matchesQuery = `${project.name} ${project.type} ${project.owner}`.toLowerCase().includes(query.toLowerCase())
     const matchesFilter = filter === 'All projects' || project.status === filter
     return matchesQuery && matchesFilter
-  }), [query, filter])
+  }), [projectList, query, filter])
 
   const notify = (message) => {
     setToast(message)
     window.setTimeout(() => setToast(''), 2800)
+  }
+
+  const createProject = (event) => {
+    event.preventDefault()
+    const name = newProject.name.trim()
+    if (!name) return
+
+    setProjectList((currentProjects) => [{
+      name,
+      type: newProject.team,
+      owner: 'Alex Lee',
+      initials: 'AL',
+      color: 'teal',
+      progress: 0,
+      status: 'On track',
+      due: newProject.due ? new Date(`${newProject.due}T00:00:00`).toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) : 'Not set',
+      tasks: '0 / 0',
+      members: ['AL'],
+    }, ...currentProjects])
+    setNewProject({ name: '', description: '', team: 'Product team', due: '' })
+    setShowModal(false)
+    setFilter('All projects')
+    notify(`${name} was added to your projects`)
   }
 
   return (
@@ -92,7 +117,7 @@ function App() {
           </div>
         </div>
       </main>
-      {showModal && <div className="modal-backdrop" onClick={() => setShowModal(false)}><div className="modal" onClick={(event) => event.stopPropagation()}><div className="modal-head"><div><p className="eyebrow">Workspace</p><h2>Create a new project</h2></div><button className="close-button" onClick={() => setShowModal(false)}><X size={18} /></button></div><label>Project name<input autoFocus placeholder="e.g. Website redesign" /></label><label>Project description<textarea placeholder="What are you working towards?" rows="3" /></label><div className="modal-fields"><label>Team<select><option>Product team</option><option>Growth team</option><option>Research lab</option></select></label><label>Due date<input type="date" /></label></div><div className="modal-actions"><button className="secondary-button" onClick={() => setShowModal(false)}>Cancel</button><button className="primary-button" onClick={() => { setShowModal(false); notify('Project draft created') }}>Create project</button></div></div></div>}
+      {showModal && <div className="modal-backdrop" onClick={() => setShowModal(false)}><form className="modal" onSubmit={createProject} onClick={(event) => event.stopPropagation()}><div className="modal-head"><div><p className="eyebrow">Workspace</p><h2>Create a new project</h2></div><button type="button" className="close-button" onClick={() => setShowModal(false)}><X size={18} /></button></div><label>Project name<input autoFocus required value={newProject.name} onChange={(event) => setNewProject({ ...newProject, name: event.target.value })} placeholder="e.g. Website redesign" /></label><label>Project description<textarea value={newProject.description} onChange={(event) => setNewProject({ ...newProject, description: event.target.value })} placeholder="What are you working towards?" rows="3" /></label><div className="modal-fields"><label>Team<select value={newProject.team} onChange={(event) => setNewProject({ ...newProject, team: event.target.value })}><option>Product team</option><option>Growth team</option><option>Research lab</option></select></label><label>Due date<input type="date" value={newProject.due} onChange={(event) => setNewProject({ ...newProject, due: event.target.value })} /></label></div><div className="modal-actions"><button type="button" className="secondary-button" onClick={() => setShowModal(false)}>Cancel</button><button type="submit" className="primary-button">Create project</button></div></form></div>}
       {toast && <div className="toast"><span className="toast-check"><Check size={13} /></span>{toast}</div>}
     </div>
   )
